@@ -30,6 +30,10 @@ type RotateLogHook struct {
 	formatter   logrus.Formatter
 }
 
+func (h *RotateLogHook) Levels() []logrus.Level {
+	return logrus.AllLevels
+}
+
 // Creates a hook to be added to an instance of logger. This is called with
 // `hook,err:= NewRotateLogHook("/log","example",defaultFormat)`
 // `if err == nil {log.Hooks.Add(hook)}`
@@ -65,7 +69,7 @@ func (h *RotateLogHook) SetFormatter(formatter logrus.Formatter) {
 	h.Lock()
 	defer h.Unlock()
 	if formatter == nil {
-		h.formatter = defaultFormat
+		formatter = defaultFormat
 	} else {
 		switch formatter.(type) {
 		case *logrus.TextFormatter:
